@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mihai-agent-harness"
+version = "0.1.0"
+description = "A local-first, evidence-led agent harness built around AdaL's public SDK"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "Mihai Chindris" }]
+keywords = ["agents", "harness", "adal", "workflow", "local-first"]
+dependencies = []
+
+[project.optional-dependencies]
+adal = [
+  "adal-agent-sdk @ git+https://github.com/SylphAI-Inc/adal-sdk.git@8fc658151e7ffebbe3fdd0b915dc01dbe2ee44be",
+]
+dev = ["pytest>=9.0", "pytest-asyncio>=1.0"]
+
+[project.scripts]
+agent-harness = "agent_harness.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agent_harness"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+addopts = "-ra"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
