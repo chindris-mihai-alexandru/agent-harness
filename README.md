@@ -21,7 +21,7 @@ The ledger is local audit history, not cryptographically tamper-proof storage. B
 - AdaL Agent SDK 0.3.0 from the pinned public source revision, installed as an optional extra.
 
 ```bash
-cd /Volumes/990Pro2TB/MyProjects/agent-harness
+cd agent-harness
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e '.[dev,adal]'
