@@ -4,8 +4,8 @@ import sqlite3
 
 import pytest
 
-from agent_harness.models import JobStatus, RunSpec
-from agent_harness.store import (
+from konz.models import JobStatus, RunSpec
+from konz.store import (
     IdempotencyConflictError,
     JobNotFoundError,
     SQLiteEventStore,
@@ -185,7 +185,7 @@ def test_run_spec_validates_intent_timeout_and_criterion_identity(tmp_path):
         RunSpec("task", tmp_path, timeout_seconds=0)
 
     criterion = {"criterion_id": "tests", "statement": "Tests pass", "verifier": "pytest"}
-    from agent_harness.models import AcceptanceCriterion
+    from konz.models import AcceptanceCriterion
 
     with pytest.raises(ValueError, match="unique"):
         RunSpec("task", tmp_path, criteria=(AcceptanceCriterion(**criterion), AcceptanceCriterion(**criterion)))

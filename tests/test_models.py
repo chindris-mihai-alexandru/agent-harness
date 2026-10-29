@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from agent_harness.models import AcceptanceCriterion, JobEvent, JobStatus, reduce_job_events
+from konz.models import AcceptanceCriterion, JobEvent, JobStatus, reduce_job_events
 
 
 def event(seq, kind, payload, job_id="job-1"):

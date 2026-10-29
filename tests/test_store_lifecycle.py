@@ -5,7 +5,7 @@ import threading
 
 import pytest
 
-from agent_harness.store import SQLiteEventStore
+from konz.store import SQLiteEventStore
 
 
 def test_unknown_future_schema_is_rejected_without_overwriting(tmp_path):

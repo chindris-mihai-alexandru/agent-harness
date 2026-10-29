@@ -10,7 +10,7 @@ from math import isfinite
 from pathlib import Path
 from typing import Any, Iterator
 
-from agent_harness.models import JobEvent, JobSnapshot, JobStatus, reduce_job_events, utc_now
+from konz.models import JobEvent, JobSnapshot, JobStatus, reduce_job_events, utc_now
 
 
 _EVENT_TYPE = re.compile(r"^[a-z][a-z0-9_.-]{0,127}$")
@@ -42,7 +42,7 @@ class SQLiteEventStore:
         ):
             raise ValueError("timeout must be a finite number greater than zero")
         self._restrict_permissions = database_path is None
-        default_directory = Path.home() / ".agent-harness"
+        default_directory = Path.home() / ".konz"
         self.database_path = Path(
             database_path if database_path is not None else default_directory / "runs.sqlite3"
         ).expanduser()

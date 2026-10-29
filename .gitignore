@@ -10,4 +10,4 @@ build/
 .env
 .env.*
 !.env.example
-.agent-harness/
+.konz/

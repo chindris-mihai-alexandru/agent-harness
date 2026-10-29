@@ -10,8 +10,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Awaitable, Callable
 
-from agent_harness.models import JobStatus
-from agent_harness.store import SQLiteEventStore
+from konz.models import JobStatus
+from konz.store import SQLiteEventStore
 
 
 @dataclass(frozen=True, slots=True)

@@ -5,8 +5,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from agent_harness.runner import AdalSdkRunner, ApprovalRequest, ProgressEvent
-from agent_harness.store import SQLiteEventStore
+from konz.runner import AdalSdkRunner, ApprovalRequest, ProgressEvent
+from konz.store import SQLiteEventStore
 
 
 class FakePermissionResult:

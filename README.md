@@ -1,8 +1,10 @@
-# Agent Harness
+# KonZ
 
 A local-first personal agent harness, initially using AdaL's public Python Agent SDK as its execution runtime.
 
-> This is a new, unpushed project in an early foundation stage. It is not a replacement for AdaL yet, does not reproduce AdaL's connectors or UI, and has not been verified against a live AdaL account.
+KonZ is named after Konrad Zuse, who built and ran the first working programmable computer (the Z3, 1941). The name follows the pattern of AdaL: a first name plus the start of the surname.
+
+> This is a new project in an early foundation stage. It is not a replacement for AdaL yet, does not reproduce AdaL's connectors or UI, and has not been verified against a live AdaL account.
 
 ## Current foundation
 
@@ -12,7 +14,7 @@ A local-first personal agent harness, initially using AdaL's public Python Agent
 - A CLI for one-turn runs, status, event inspection, resume, and explicit job-history purge.
 - Tests use a fake AdaL boundary. They do not make billable model calls.
 
-The ledger is local audit history, not cryptographically tamper-proof storage. By default it lives in `~/.agent-harness/runs.sqlite3`, with restrictive file permissions on the database. It stores task prompts, final assistant answers, AdaL session IDs, workspace paths, progress types, tool names/statuses, approval decisions and failure summaries. It intentionally omits raw model-thought text and tool arguments/results. Error messages can still include sensitive details, so inspect the local database and use `agent-harness purge` when appropriate. Purging is logical deletion; it cannot promise forensic erasure from filesystem snapshots, backups, or storage media. There is no encryption-at-rest or OS sandbox in this first cut. AdaL's tools run with the current user's permissions.
+The ledger is local audit history, not cryptographically tamper-proof storage. By default it lives in `~/.konz/runs.sqlite3`, with restrictive file permissions on the database. It stores task prompts, final assistant answers, AdaL session IDs, workspace paths, progress types, tool names/statuses, approval decisions and failure summaries. It intentionally omits raw model-thought text and tool arguments/results. Error messages can still include sensitive details, so inspect the local database and use `konz purge` when appropriate. Purging is logical deletion; it cannot promise forensic erasure from filesystem snapshots, backups, or storage media. There is no encryption-at-rest or OS sandbox in this first cut. AdaL's tools run with the current user's permissions.
 
 ## Requirements and setup
 
@@ -21,7 +23,7 @@ The ledger is local audit history, not cryptographically tamper-proof storage. B
 - AdaL Agent SDK 0.3.0 from the pinned public source revision, installed as an optional extra.
 
 ```bash
-cd agent-harness
+cd konz
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e '.[dev,adal]'
@@ -34,22 +36,22 @@ The AdaL SDK launches the installed AdaL runtime as a local subprocess. The user
 
 ```bash
 # One new job, in the chosen project directory
-agent-harness run "Explain how this project handles authentication" \
+konz run "Explain how this project handles authentication" \
   --workspace /path/to/project \
   --model claude-sonnet-4-6
 
 # Inspect the latest job list or one job
-agent-harness status
-agent-harness status <job-id>
-agent-harness events <job-id>
+konz status
+konz status <job-id>
+konz events <job-id>
 
 # Resume a paused/failed AdaL conversation with the same signed-in account
-agent-harness resume <job-id> --confirm-same-account
+konz resume <job-id> --confirm-same-account
 # If the prior process exited unexpectedly, confirm it has stopped too:
-agent-harness resume <job-id> --confirm-same-account --confirm-no-active-run
+konz resume <job-id> --confirm-same-account --confirm-no-active-run
 
 # Permanently remove this job's local event history (requires the exact ID twice)
-agent-harness purge <job-id> --confirm-job-id <job-id>
+konz purge <job-id> --confirm-job-id <job-id>
 ```
 
 Use the same AdaL account when resuming a session. Account identity is not yet bound to a job in this prototype, so do not switch AdaL accounts and then resume an old session. Connector credentials are not copied or handled by this code.
@@ -78,7 +80,7 @@ Open `docs/product-brief.md` and `docs/architecture.md` for the direction and tr
 ```bash
 python -m pytest -q
 python -m compileall -q src tests
-python -m agent_harness.cli --help  # after the editable install above
+python -m konz.cli --help  # after the editable install above
 ```
 
 The tests fake the AdaL runtime. They verify persistence, event ordering, idempotency, privacy filtering, approval handling and CLI status paths, not provider behavior. No real AdaL query has been run as part of the foundation.

@@ -3,7 +3,7 @@ requires = ["hatchling>=1.26"]
 build-backend = "hatchling.build"
 
 [project]
-name = "mihai-agent-harness"
+name = "konz"
 version = "0.1.0"
 description = "A local-first, evidence-led agent harness built around AdaL's public SDK"
 readme = "README.md"
@@ -20,10 +20,10 @@ adal = [
 dev = ["pytest>=9.0", "pytest-asyncio>=1.0"]
 
 [project.scripts]
-agent-harness = "agent_harness.cli:main"
+konz = "konz.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/agent_harness"]
+packages = ["src/konz"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

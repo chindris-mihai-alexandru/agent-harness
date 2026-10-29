@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import pytest
 
-from agent_harness import cli
-from agent_harness.runner import TurnResult
-from agent_harness.store import SQLiteEventStore
+from konz import cli
+from konz.runner import TurnResult
+from konz.store import SQLiteEventStore
 
 
 def test_paused_turn_returns_exit_code_two(tmp_path, monkeypatch, capsys):

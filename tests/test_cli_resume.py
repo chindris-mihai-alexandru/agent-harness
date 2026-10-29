@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from agent_harness import cli
-from agent_harness.store import SQLiteEventStore
+from konz import cli
+from konz.store import SQLiteEventStore
 
 
 def make_paused_job(database, workspace):
@@ -23,7 +23,7 @@ def test_resume_requires_explicit_same_account_confirmation(tmp_path, monkeypatc
     store.append_event(job.job_id, "session.started", {"session_id": "session-1"})
     store.append_event(job.job_id, "run.paused", {"reason": "approval_required"})
 
-    monkeypatch.setattr("sys.argv", ["agent-harness", "--database", str(database), "resume", job.job_id])
+    monkeypatch.setattr("sys.argv", ["konz", "--database", str(database), "resume", job.job_id])
     with pytest.raises(SystemExit) as error:
         cli.main()
     assert error.value.code == 2
@@ -37,7 +37,7 @@ def test_resume_uses_stored_session_and_workspace_after_confirmation(tmp_path, m
     monkeypatch.setattr(cli, "_execute_turn", lambda *args: calls.append(args))
     monkeypatch.setattr(
         "sys.argv",
-        ["agent-harness", "--database", str(database), "resume", job.job_id, "--confirm-same-account"],
+        ["konz", "--database", str(database), "resume", job.job_id, "--confirm-same-account"],
     )
 
     cli.main()
@@ -58,7 +58,7 @@ def test_running_resume_requires_confirmation_that_old_process_stopped(tmp_path,
     store.append_event(job.job_id, "turn.started", {"turn_id": "old-turn"})
     monkeypatch.setattr(
         "sys.argv",
-        ["agent-harness", "--database", str(database), "resume", job.job_id, "--confirm-same-account"],
+        ["konz", "--database", str(database), "resume", job.job_id, "--confirm-same-account"],
     )
     with pytest.raises(SystemExit) as error:
         cli.main()
@@ -74,7 +74,7 @@ def test_running_resume_requires_confirmation_that_old_process_stopped(tmp_path,
     monkeypatch.setattr(cli, "_execute_turn", fake_execute_turn)
     monkeypatch.setattr(
         "sys.argv",
-        ["agent-harness", "--database", str(database), "resume", job.job_id,
+        ["konz", "--database", str(database), "resume", job.job_id,
          "--confirm-same-account", "--confirm-no-active-run"],
     )
     cli.main()
@@ -97,7 +97,7 @@ def test_resume_existing_completed_job_is_refused_even_if_confirmed(tmp_path, mo
     store.append_event(job.job_id, "run.started", {})
     store.append_event(job.job_id, "run.completed", {})
 
-    monkeypatch.setattr("sys.argv", ["agent-harness", "--database", str(database), "resume", job.job_id, "--confirm-same-account"])
+    monkeypatch.setattr("sys.argv", ["konz", "--database", str(database), "resume", job.job_id, "--confirm-same-account"])
     with pytest.raises(SystemExit) as error:
         cli.main()
     assert error.value.code == 1

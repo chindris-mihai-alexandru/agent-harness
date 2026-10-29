@@ -7,13 +7,13 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from agent_harness.models import RunSpec
-from agent_harness.runner import AdalSdkRunner, ApprovalRequest, ProgressEvent
-from agent_harness.store import JobNotFoundError, SQLiteEventStore
+from konz.models import RunSpec
+from konz.runner import AdalSdkRunner, ApprovalRequest, ProgressEvent
+from konz.store import JobNotFoundError, SQLiteEventStore
 
 
 def _default_database() -> Path:
-    return Path.home() / ".agent-harness" / "runs.sqlite3"
+    return Path.home() / ".konz" / "runs.sqlite3"
 
 
 def _interactive_approval_sync(request: ApprovalRequest) -> bool:
@@ -47,7 +47,7 @@ def _progress(event: ProgressEvent) -> None:
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="agent-harness",
+        prog="konz",
         description="Local-first, evidence-led harness around the AdaL Agent SDK.",
     )
     parser.add_argument("--database", type=Path, default=_default_database())
@@ -99,7 +99,7 @@ def _record_result(store: SQLiteEventStore, job_id: str, result: Any) -> None:
             "run.paused",
             {"reason": "approval_required", "session_id": result.session_id},
         )
-        print(f"\nJob {job_id} paused. Inspect it with `agent-harness status {job_id}`.")
+        print(f"\nJob {job_id} paused. Inspect it with `konz status {job_id}`.")
         raise SystemExit(2)
     else:
         store.append_event(
